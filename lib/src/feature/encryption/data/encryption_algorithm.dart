@@ -4,9 +4,6 @@ import 'package:meta/meta.dart';
 abstract class EncryptionAlgorithm {
   const EncryptionAlgorithm();
 
-  abstract final String name;
-  abstract final String description;
-
   static const EncryptionAlgorithm aesSync = EncryptionAlgorithmAESSync();
   static const EncryptionAlgorithm aesAsync = EncryptionAlgorithmAESAsync();
   static const EncryptionAlgorithm aesIsolate = EncryptionAlgorithmAESIsolate();
@@ -17,19 +14,18 @@ abstract class EncryptionAlgorithm {
     aesIsolate,
   ];
 
-  @override
-  String toString() => name;
+  abstract final String name;
+  abstract final String description;
+
+  static Future<void> encrypt(EncryptionAlgorithm algorithm) => algorithm._encrypt();
 
   Future<void> _encrypt();
+
+  @override
+  String toString() => name;
 }
 
 @sealed
-abstract class Encryptor {
-  const Encryptor._();
-
-  static Future<void> encrypt(EncryptionAlgorithm algorithm) => algorithm._encrypt();
-}
-
 class EncryptionAlgorithmAESSync extends EncryptionAlgorithm {
   const EncryptionAlgorithmAESSync();
 
@@ -43,6 +39,7 @@ class EncryptionAlgorithmAESSync extends EncryptionAlgorithm {
   Future<void> _encrypt() async {}
 }
 
+@sealed
 class EncryptionAlgorithmAESAsync extends EncryptionAlgorithm {
   const EncryptionAlgorithmAESAsync();
 
@@ -56,6 +53,7 @@ class EncryptionAlgorithmAESAsync extends EncryptionAlgorithm {
   Future<void> _encrypt() => const EncryptionAlgorithmAESSync()._encrypt();
 }
 
+@sealed
 class EncryptionAlgorithmAESIsolate extends EncryptionAlgorithm {
   const EncryptionAlgorithmAESIsolate();
 

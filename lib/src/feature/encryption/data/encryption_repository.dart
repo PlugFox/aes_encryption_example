@@ -11,7 +11,7 @@ class EncryptionRepositoryImpl implements IEncryptionRepository {
   @override
   Stream<EncryptionProgress> encrypt(EncryptionAlgorithm algorithm) async* {
     yield const EncryptionProgress(0);
-    await Encryptor.encrypt(algorithm);
+    await EncryptionAlgorithm.encrypt(algorithm);
 
     for (var i = 0; i < 20; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 250));
