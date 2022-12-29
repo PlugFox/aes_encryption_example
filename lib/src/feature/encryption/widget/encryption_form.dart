@@ -169,9 +169,43 @@ class _ProgressBarrier extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AbsorbPointer(
         absorbing: inProgress,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 450),
-          child: inProgress ? const _ProgressIndicator() : const SizedBox.shrink(),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: RepaintBoundary(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 350),
+                  child: inProgress
+                      ? RepaintBoundary(
+                          child: ClipRect(
+                            child: BackdropFilter(
+                              filter: ui.ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                              child: ColoredBox(
+                                color: Colors.black.withOpacity(0.5),
+                                child: const SizedBox.expand(),
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 650),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: Tween<double>(begin: 0, end: 1).animate(animation),
+                    alignment: Alignment.center,
+                    child: child,
+                  ),
+                ),
+                child: inProgress ? const _ProgressIndicator() : const SizedBox.shrink(),
+              ),
+            ),
+          ],
         ),
       );
 }
@@ -180,24 +214,16 @@ class _ProgressIndicator extends StatelessWidget {
   const _ProgressIndicator();
 
   @override
-  Widget build(BuildContext context) => ClipRect(
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-          child: ColoredBox(
-            color: Colors.black.withOpacity(0.5),
-            child: Center(
-              child: SizedBox.square(
-                dimension: 128,
-                child: RepaintBoundary(
-                  child: ValueListenableBuilder<EncryptionProgress>(
-                    valueListenable: context.findAncestorStateOfType<_EncryptionFormState>()?._progressListenable ??
-                        const AlwaysStoppedAnimation<EncryptionProgress>(EncryptionProgress(0)),
-                    builder: (context, progress, _) => CircularProgressIndicator(
-                      value: progress.value.clamp(0.0, 1.0),
-                      strokeWidth: 16,
-                    ),
-                  ),
-                ),
+  Widget build(BuildContext context) => Center(
+        child: SizedBox.square(
+          dimension: 128,
+          child: RepaintBoundary(
+            child: ValueListenableBuilder<EncryptionProgress>(
+              valueListenable: context.findAncestorStateOfType<_EncryptionFormState>()?._progressListenable ??
+                  const AlwaysStoppedAnimation<EncryptionProgress>(EncryptionProgress(0)),
+              builder: (context, progress, _) => CircularProgressIndicator(
+                value: progress.value.clamp(0.0, 1.0),
+                strokeWidth: 16,
               ),
             ),
           ),

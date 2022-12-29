@@ -40,7 +40,7 @@ class EncryptionAlgorithmAESSync extends EncryptionAlgorithm {
   String get description => 'Affects the event loop';
 
   @override
-  Future<void> _encrypt() => throw UnimplementedError();
+  Future<void> _encrypt() async {}
 }
 
 class EncryptionAlgorithmAESAsync extends EncryptionAlgorithm {
