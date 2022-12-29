@@ -1,7 +1,9 @@
+import 'encryption_algorithms/aes.dart';
+
 enum EncryptionAlgorithm {
-  aesSync('Synchronous AES encryption', 'Affects the event loop', _$algorithm),
-  aesAsync('Asynchronous AES encryption', 'Does not affect the event loop', _$algorithm),
-  aesIsolate('Isolated AES encryption', 'Performed in a separate isolator', _$algorithm);
+  aesSync('Synchronous AES encryption', 'Affects the event loop', $EncryptionAlgorithmAES.sync),
+  aesAsync('Asynchronous AES encryption', 'Does not affect the event loop', $EncryptionAlgorithmAES.async),
+  aesIsolate('Isolated AES encryption', 'Performed in a separate isolator', $EncryptionAlgorithmAES.isolate);
 
   const EncryptionAlgorithm(this.name, this.description, this._encrypt);
 
@@ -12,5 +14,3 @@ enum EncryptionAlgorithm {
 
   final Future<void> Function() _encrypt;
 }
-
-Future<void> _$algorithm() async {}
