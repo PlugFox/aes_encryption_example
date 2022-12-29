@@ -1,0 +1,60 @@
+name: encryption
+description: AES Encryption example
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+  flutter: '>=3.3.8'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  collection: any
+  meta: any
+  intl: ^0.17.0
+  path: ^1.8.2
+  path_provider: ^2.0.11
+  #shared_preferences: ^2.0.15
+  cupertino_icons: ^1.0.2
+  async: ^2.9.0
+  file_picker: ^5.2.4
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  build: ^2.3.1
+  build_runner: ^2.3.0
+  build_test: ^2.1.5
+  dart_code_metrics: ^4.19.2
+  #flutter_gen_runner: ^5.1.0+1
+  pubspec_generator: ^3.0.1
+  json_serializable: ^6.5.4
+  freezed: ^2.2.0
+  flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.16
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/
+    - assets/image/
+
+flutter_intl:
+  enabled: true
+  class_name: GeneratedLocalization
+  main_locale: en
+  arb_dir: lib/src/common/localization
+  output_dir: lib/src/common/localization/generated
+  use_deferred_loading: false
+
+#flutter_gen:
+#  output: lib/src/common/constant/
+#  line_length: 120

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "env": {
+        "ENVIRONMENT": "develop"
+      },
+      "args": [
+        "--dart-define=ENVIRONMENT=develop"
+      ]
+    },
+    {
+      "name": "release",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "env": {
+        "ENVIRONMENT": "production"
+      },
+      "args": [
+        "--dart-define=ENVIRONMENT=production"
+      ]
+    }
+  ]
+}
