@@ -216,7 +216,7 @@ class _ProgressBarrier extends StatelessWidget {
       );
 }
 
-// TODO: Replace with custom progress indicator
+// TODO: Replace with custom progress indicator, with percent and always rotation
 // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
 class _ProgressIndicator extends StatelessWidget {
   const _ProgressIndicator();

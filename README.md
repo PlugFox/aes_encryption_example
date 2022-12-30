@@ -68,7 +68,7 @@ Future<void> decrypt(io.File encrypted, io.File decrypted, String key) async {
 ## Chunked and streamed encryption algorithm
 
 Splitting into chunks will allow us to encrypt even very large files in several threads or isolates.
-For example, we can divide the load among the processor cores, where each isolate will be responsible for its own file chunk offset.
+For example, we can divide the load among the processor cores, where each isolate will be responsible for its file chunk offset.
 We can also store and transfer encrypted chunks as a single file or split them into parts.
 
 Encryption:

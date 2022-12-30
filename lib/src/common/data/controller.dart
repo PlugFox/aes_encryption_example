@@ -28,18 +28,23 @@ abstract class Controller<State extends Object> with ChangeNotifier {
 
   @nonVirtual
   @protected
+  void setState(State state) {
+    _$state = state;
+    notifyListeners();
+  }
+
+  @nonVirtual
+  @protected
   Future<void> handle(Future<void> Function(SetState<State> setState) handler) async {
     // For throttling handle calls
     if (_$isProcessing) return;
     _$isProcessing = true;
     notifyListeners();
     try {
-      await handler((state) {
-        _$state = state;
-        notifyListeners();
-      });
+      await handler(setState);
     } on Object catch (error, stackTrace) {
-      // rethrow all errors to global observer, instead of logging them
+      // TODO: Rethrow all errors to global observer, instead of logging them
+      // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
       severe(error, stackTrace, 'Error "$error" while handling controller $runtimeType');
     } finally {
       _$isProcessing = false;

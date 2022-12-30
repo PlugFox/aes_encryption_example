@@ -15,8 +15,11 @@ import '../../model/encryption_progress.dart';
 abstract class $EncryptionAlgorithmDartAES {
   const $EncryptionAlgorithmDartAES._();
 
-  static Stream<EncryptionProgress> async(io.File source, String key,
-          {Future<void> Function(io.File encrypted)? out}) =>
+  static Stream<EncryptionProgress> async(
+    io.File source,
+    String key, {
+    Future<void> Function(io.File encrypted)? out,
+  }) =>
       _encryptFile(source, key, out: out);
 
   static Stream<EncryptionProgress> isolate(

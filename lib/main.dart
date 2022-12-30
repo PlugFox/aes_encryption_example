@@ -11,6 +11,8 @@ import 'src/common/widget/app_error.dart';
 void main() => runZonedGuarded<void>(
       () async {
         try {
+          // TODO: Logo and splash screen
+          // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
           await $initializeApp();
         } on Object catch (error, stackTrace) {
           ErrorUtil.logError(error, stackTrace).ignore();
