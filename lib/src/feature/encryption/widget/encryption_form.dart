@@ -79,6 +79,7 @@ mixin _ProgressMixin on State<EncryptionForm> {
           ScaffoldMessenger.maybeOf(context)?.showSnackBar(
             SnackBar(
               content: Text(state.message),
+              duration: const Duration(seconds: 10),
             ),
           );
         },
@@ -88,6 +89,7 @@ mixin _ProgressMixin on State<EncryptionForm> {
             SnackBar(
               content: Text(state.message),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 10),
             ),
           );
         },
@@ -123,6 +125,8 @@ class _FormContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const SizedBox(height: 8),
+                    // TODO: Secret key (16 chars, only numbers and text)
+                    // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
                     ...EncryptionAlgorithm.values.map<Widget>(
                       (algorithm) => RadioListTile<EncryptionAlgorithm>(
                         title: Text(algorithm.name, style: Theme.of(context).textTheme.labelMedium),
@@ -145,7 +149,9 @@ class _FormContent extends StatelessWidget {
                       onPressed: currentAlgorithm == null || inProgress
                           ? null
                           : () {
-                              EncryptionScope.encrypt(context, currentAlgorithm);
+                              // TODO: pass secret key
+                              // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
+                              EncryptionScope.encrypt(context, '0123456789abcdef', currentAlgorithm);
                               HapticFeedback.mediumImpact().ignore();
                             },
                       child: const Text('Encrypt'),
@@ -210,6 +216,8 @@ class _ProgressBarrier extends StatelessWidget {
       );
 }
 
+// TODO: Replace with custom progress indicator
+// Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
 class _ProgressIndicator extends StatelessWidget {
   const _ProgressIndicator();
 

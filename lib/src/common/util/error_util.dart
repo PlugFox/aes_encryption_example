@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 //import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
+import '../../feature/encryption/model/exceptions.dart';
 import 'error_util/error_util_platform.dart'
     // ignore: uri_does_not_exist
     if (dart.library.html) 'error_util/error_util_browser.dart';
@@ -87,8 +89,14 @@ abstract class ErrorUtil {
     } else if (error is FirebaseException) {
       return 'Firebase exception occurred';
     */
+    } else if (error is FileSystemException) {
+      return 'File system error';
     } else if (error is AssertionError) {
       return 'Assertion error';
+    } else if (error is FilePickerException) {
+      return 'No file selected';
+    } else if (error is EncryptionException) {
+      return 'Encryption error';
     } else if (error is Error) {
       return 'An error has occurred';
     } else if (error is Exception) {

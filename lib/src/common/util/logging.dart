@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 
-bool _$enabled = false;
-void $setLogging({required bool? enabled}) => _$enabled = enabled ?? _$enabled;
+import 'package:flutter/foundation.dart';
 
 /// Tracing information
 final void Function(Object? message) fine = _logAll('FINE', 500);
@@ -23,11 +22,11 @@ void Function(
   StackTrace? stackTrace,
   String? reason,
 ]) _logAll(String prefix, int level) => (Object? message, [StackTrace? stackTrace, String? reason]) {
-      if (!_$enabled) return;
+      if (kReleaseMode) return;
       developer.log(
         '[$prefix] ${reason ?? message}',
         level: level,
-        name: 'router',
+        name: 'encryption',
         error: message is Exception || message is Error ? message : null,
         stackTrace: stackTrace,
       );

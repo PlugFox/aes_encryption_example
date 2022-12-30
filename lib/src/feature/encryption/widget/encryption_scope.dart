@@ -18,8 +18,8 @@ class EncryptionScope extends StatefulWidget {
   /// The widget below this widget in the tree.
   final Widget child;
 
-  static void encrypt(BuildContext context, EncryptionAlgorithm algorithm) =>
-      _InheritedEncryptionScope.maybeOf(context, listen: false)?.controller.encrypt(algorithm).ignore();
+  static void encrypt(BuildContext context, String key, EncryptionAlgorithm algorithm) =>
+      _InheritedEncryptionScope.maybeOf(context, listen: false)?.controller.encrypt(key, algorithm).ignore();
 
   static EncryptionController controllerOf(BuildContext context) =>
       _InheritedEncryptionScope.of(context, listen: false).controller;

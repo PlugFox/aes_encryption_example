@@ -1,16 +1,41 @@
-import 'encryption_algorithms/aes.dart';
+import 'dart:io' as io;
+
+import '../model/encryption_progress.dart';
+import 'encryption_algorithms/dart_aes.dart';
+import 'encryption_algorithms/native_aes.dart';
 
 enum EncryptionAlgorithm {
-  aesSync('Synchronous AES encryption', 'Affects the event loop', $EncryptionAlgorithmAES.sync),
-  aesAsync('Asynchronous AES encryption', 'Does not affect the event loop', $EncryptionAlgorithmAES.async),
-  aesIsolate('Isolated AES encryption', 'Performed in a separate isolator', $EncryptionAlgorithmAES.isolate);
+  dartAesAsync(
+    'Dart Asynchronous AES',
+    'Does not affect the event loop',
+    $EncryptionAlgorithmDartAES.async,
+  ),
+
+  dartAesIsolate(
+    'Dart Isolated AES',
+    'Performed in a separate isolator',
+    $EncryptionAlgorithmDartAES.isolate,
+  ),
+
+  nativeAesAsync(
+    'Native Asynchronous AES',
+    'Does not affect the event loop',
+    $EncryptionAlgorithmNativeAES.async,
+  );
 
   const EncryptionAlgorithm(this.name, this.description, this._encrypt);
 
-  static Future<void> encrypt(EncryptionAlgorithm algorithm) => algorithm._encrypt();
+  static Stream<EncryptionProgress> encrypt(
+    io.File source,
+    String key,
+    EncryptionAlgorithm algorithm, {
+    Future<void> Function(io.File encrypted)? out,
+  }) =>
+      algorithm._encrypt(source, key, out: out);
 
   final String name;
   final String description;
 
-  final Future<void> Function() _encrypt;
+  final Stream<EncryptionProgress> Function(io.File source, String key, {Future<void> Function(io.File encrypted)? out})
+      _encrypt;
 }
