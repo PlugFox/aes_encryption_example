@@ -87,7 +87,7 @@ Encryption:
 
 1. Set constants for Chunk size, Nonce (IV) length, and MAC length
 2. Get the secret key
-3. Prepare temporary file for encrypted data into %TEMP% directory
+3. Prepare a temporary file for encrypted data into %TEMP% directory
 4. The open source file for reading as a Uint8List Stream
 5. Split the bytes stream into chunks of size `chunkSize`
 6. Encrypt each chunk and write to a temporary file,
@@ -100,7 +100,7 @@ Decryption:
 
 1. Set constants for Chunk size, Nonce (IV) length, and MAC length
 2. Get the secret key
-3. Prepare temporary file for decrypted data into %TEMP% directory
+3. Prepare a temporary file for decrypted data into %TEMP% directory
 4. The open encrypted file for reading as a Uint8List Stream
 5. Split the bytes stream into chunks of size `nonceLength` + `chunkSize` + `macLength`
 6. Decrypt each chunk and write to a temporary file
