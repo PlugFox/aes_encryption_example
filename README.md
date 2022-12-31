@@ -1,5 +1,15 @@
 # AES Encryption example
 
+For state management, I pick simple `ChangeNotifier`, because it's enough for this app.
+
+The app is designed to be extensible:
+
+1. To add a new encryption algorithm, you need to add a value in only one place: `lib/src/feature/encryption/data/encryption_algorithm.dart`, just add a new Enum value.
+2. Encryption of files is done in parts, breaking them into pieces of a certain size, so the work of file encryption can be divided into several isolates.
+3. Encrypted chunks can be saved or transferred both in parts and as a single file.
+
+You can find instructions about how to encode and decode below.
+
 ![](https://github.com/PlugFox/aes_encryption_example/blob/master/assets/screenshot.jpg)
 
 ## Simple AES 128 GSM encryption & decryption example
