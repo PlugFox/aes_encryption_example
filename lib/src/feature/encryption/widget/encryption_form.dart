@@ -22,10 +22,12 @@ class EncryptionForm extends StatefulWidget {
 
 class _EncryptionFormState extends State<EncryptionForm> with _ProgressMixin {
   final ValueNotifier<EncryptionAlgorithm?> _algorithmNotifier = ValueNotifier<EncryptionAlgorithm?>(null);
+  final TextEditingController _secretKeyController = TextEditingController(text: '0123456789abcdef');
 
   @override
   void dispose() {
     _algorithmNotifier.dispose();
+    _secretKeyController.dispose();
     super.dispose();
   }
 
@@ -35,7 +37,13 @@ class _EncryptionFormState extends State<EncryptionForm> with _ProgressMixin {
         builder: (context, inProgress, _) => Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            Positioned.fill(child: _FormContent(algorithmNotifier: _algorithmNotifier, inProgress: inProgress)),
+            Positioned.fill(
+              child: _FormContent(
+                algorithmNotifier: _algorithmNotifier,
+                secretKey: _secretKeyController,
+                inProgress: inProgress,
+              ),
+            ),
             Positioned.fill(child: _ProgressBarrier(inProgress: inProgress)),
           ],
         ),
@@ -98,11 +106,13 @@ mixin _ProgressMixin on State<EncryptionForm> {
 
 class _FormContent extends StatelessWidget {
   const _FormContent({
-    required this.algorithmNotifier,
     required this.inProgress,
+    required this.secretKey,
+    required this.algorithmNotifier,
   });
 
   final bool inProgress;
+  final TextEditingController secretKey;
   final ValueNotifier<EncryptionAlgorithm?> algorithmNotifier;
 
   @override
@@ -121,16 +131,26 @@ class _FormContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Select the encryption option to use',
-                      style: Theme.of(context).textTheme.labelLarge,
+                      'Encryption option',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
-                    // TODO: Secret key (16 chars, only numbers and text)
-                    // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
+                    const SizedBox(height: 16),
                     ...EncryptionAlgorithm.values.map<Widget>(
                       (algorithm) => RadioListTile<EncryptionAlgorithm>(
-                        title: Text(algorithm.name, style: Theme.of(context).textTheme.labelMedium),
-                        subtitle: Text(algorithm.description, style: Theme.of(context).textTheme.labelSmall),
+                        title: Text(
+                          algorithm.name,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 16),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          algorithm.description,
+                          style: Theme.of(context).textTheme.labelSmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         value: algorithm,
                         groupValue: currentAlgorithm,
                         onChanged: (value) {
@@ -139,22 +159,51 @@ class _FormContent extends StatelessWidget {
                         },
                       ),
                     ),
-                    const Divider(
-                      height: 24,
-                      thickness: 1,
-                      indent: 16,
-                      endIndent: 16,
+                    const Divider(height: 24, thickness: 1, indent: 16, endIndent: 16),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Center(
+                        child: SizedBox(
+                          width: 250,
+                          child: TextField(
+                            controller: secretKey,
+                            expands: false,
+                            maxLength: 16,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.visiblePassword,
+                            enabled: !inProgress,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[0-9a-fA-F]')),
+                            ],
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Secret key',
+                              hintText: 'Secret key (16 chars)',
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: currentAlgorithm == null || inProgress
-                          ? null
-                          : () {
-                              // TODO: pass secret key
-                              // Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
-                              EncryptionScope.encrypt(context, '0123456789abcdef', currentAlgorithm);
-                              HapticFeedback.mediumImpact().ignore();
-                            },
-                      child: const Text('Encrypt'),
+                    const SizedBox(height: 24),
+                    Center(
+                      child: SizedBox(
+                        width: 250,
+                        height: 64,
+                        child: ValueListenableBuilder(
+                          valueListenable: secretKey,
+                          builder: (context, key, __) => ElevatedButton(
+                            onPressed: currentAlgorithm == null || inProgress || key.text.length != 16
+                                ? null
+                                : () {
+                                    EncryptionScope.encrypt(context, key.text, currentAlgorithm);
+                                    HapticFeedback.mediumImpact().ignore();
+                                  },
+                            child: const Text('Encrypt', style: TextStyle(fontSize: 24)),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

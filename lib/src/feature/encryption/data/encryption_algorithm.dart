@@ -1,26 +1,27 @@
 import 'dart:io' as io;
 
 import '../model/encryption_progress.dart';
-import 'encryption_algorithms/dart_aes.dart';
-import 'encryption_algorithms/native_aes.dart';
+import 'encryption_algorithms/dart_aes_async.dart';
+import 'encryption_algorithms/dart_aes_isolate.dart';
+import 'encryption_algorithms/flutter_aes_async.dart';
 
 enum EncryptionAlgorithm {
   dartAesAsync(
     'Dart Asynchronous AES',
     'Does not affect the event loop',
-    $EncryptionAlgorithmDartAES.async,
+    $dartAesAsync,
   ),
 
   dartAesIsolate(
     'Dart Isolated AES',
     'Performed in a separate isolator',
-    $EncryptionAlgorithmDartAES.isolate,
+    $dartAesIsolate,
   ),
 
   nativeAesAsync(
-    'Native Asynchronous AES',
+    'Flutter Asynchronous AES',
     'Does not affect the event loop',
-    $EncryptionAlgorithmNativeAES.async,
+    $flutterAesAsync,
   );
 
   const EncryptionAlgorithm(this.name, this.description, this._encrypt);

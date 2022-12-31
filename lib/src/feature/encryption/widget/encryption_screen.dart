@@ -11,13 +11,9 @@ class EncryptionScreen extends StatelessWidget {
   const EncryptionScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => EncryptionScope(
+  Widget build(BuildContext context) => const EncryptionScope(
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('AES Encryption'),
-            centerTitle: true,
-          ),
-          body: const SafeArea(
+          body: SafeArea(
             child: EncryptionForm(),
           ),
         ),
