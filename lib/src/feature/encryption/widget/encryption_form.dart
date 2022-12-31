@@ -3,7 +3,9 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../../common/widget/radial_progress_indicator.dart';
 import '../controller/encryption_controller.dart';
 import '../data/encryption_algorithm.dart';
 import '../model/encryption_progress.dart';
@@ -265,8 +267,6 @@ class _ProgressBarrier extends StatelessWidget {
       );
 }
 
-// TODO: Replace with custom progress indicator, with percent and always rotation
-// Matiunin Mikhail <plugfox@gmail.com>, 30 December 2022
 class _ProgressIndicator extends StatelessWidget {
   const _ProgressIndicator();
 
@@ -275,12 +275,59 @@ class _ProgressIndicator extends StatelessWidget {
         child: SizedBox.square(
           dimension: 128,
           child: RepaintBoundary(
-            child: ValueListenableBuilder<EncryptionProgress>(
-              valueListenable: context.findAncestorStateOfType<_EncryptionFormState>()?._progressListenable ??
-                  const AlwaysStoppedAnimation<EncryptionProgress>(EncryptionProgress(0)),
-              builder: (context, progress, _) => CircularProgressIndicator(
-                value: progress.value.clamp(0.0, 1.0),
-                strokeWidth: 16,
+            child: RadialProgressIndicator(
+              size: 128,
+              child: _ProgressNumbers(
+                controller: context.findAncestorStateOfType<_EncryptionFormState>()?._progressListenable ??
+                    const AlwaysStoppedAnimation<EncryptionProgress>(EncryptionProgress(0)),
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class _ProgressNumbers extends StatelessWidget {
+  const _ProgressNumbers({required this.controller});
+
+  final ValueListenable<EncryptionProgress> controller;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: ValueListenableBuilder<EncryptionProgress>(
+          valueListenable: controller,
+          builder: (context, progress, _) => AnimatedOpacity(
+            duration: const Duration(milliseconds: 350),
+            opacity: progress.value == 0 || progress.value == 1 ? 0 : 1,
+            child: Text(
+              '${(progress.value * 100).round().toString().padLeft(3, '0')}%',
+              style: GoogleFonts.coiny(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: Colors.white,
+                shadows: <Shadow>[
+                  const BoxShadow(
+                    color: Colors.white24,
+                    offset: Offset(-2, -2),
+                    blurRadius: 8,
+                  ),
+                  const BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(2, 2),
+                    blurRadius: 8,
+                  ),
+                  const BoxShadow(
+                    color: Colors.black,
+                    offset: Offset.zero,
+                    blurRadius: 6,
+                  ),
+                  const BoxShadow(
+                    color: Colors.black,
+                    offset: Offset.zero,
+                    blurRadius: 4,
+                  ),
+                ],
               ),
             ),
           ),

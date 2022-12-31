@@ -1,5 +1,7 @@
 # AES Encryption example
 
+[](assets/logo_512.png)
+
 ## Simple AES 128 GSM encryption & decryption example
 
 Simple encryption of file using AES-128-GCM with a 128-bit key, 128-bit nonce, and 128-bit MAC
