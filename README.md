@@ -1,6 +1,6 @@
 # AES Encryption example
 
-![](/assets/screenshot.png)
+![](https://github.com/PlugFox/aes_encryption_example/blob/master/assets/screenshot.jpg)
 
 ## Simple AES 128 GSM encryption & decryption example
 
